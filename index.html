@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deepak Kumar Kalakota — DCO Lead & Infrastructure Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #060A12;
+    --bg-raised: #0B1120;
+    --bg-card: #0F1628;
+    --surface: #182040;
+    --border: #1A2545;
+    --border-bright: #243060;
+    --text: #E4EAF5;
+    --text-muted: #7B8DB5;
+    --text-dim: #3E5280;
+    --green: #00FF88;
+    --green-dim: rgba(0,255,136,0.08);
+    --green-mid: rgba(0,255,136,0.2);
+    --blue: #00AAFF;
+    --blue-dim: rgba(0,170,255,0.08);
+    --cyan: #00E5FF;
+    --orange: #FF7043;
+    --orange-dim: rgba(255,112,67,0.08);
+    --purple: #9C7CFF;
+    --purple-dim: rgba(156,124,255,0.08);
+    --red: #FF4D6A;
+    --radius: 14px;
+    --radius-lg: 20px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ===== ANIMATED GRID BACKGROUND ===== */
+  .grid-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .grid-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(0,170,255,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(0,255,136,0.04) 0%, transparent 60%);
+  }
+
+  /* ===== FIBER OPTIC LINES ===== */
+  .fiber-lines {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none; overflow: hidden;
+  }
+  .fiber-line {
+    position: absolute; width: 2px; background: linear-gradient(180deg, transparent, var(--green), transparent);
+    opacity: 0.15; animation: fiberPulse 4s ease-in-out infinite;
+  }
+  .fiber-line:nth-child(1) { left: 8%; height: 100%; animation-delay: 0s; }
+  .fiber-line:nth-child(2) { left: 22%; height: 100%; animation-delay: 1.2s; opacity: 0.08; }
+  .fiber-line:nth-child(3) { left: 45%; height: 100%; animation-delay: 0.6s; opacity: 0.1; }
+  .fiber-line:nth-child(4) { left: 68%; height: 100%; animation-delay: 2s; opacity: 0.06; }
+  .fiber-line:nth-child(5) { left: 88%; height: 100%; animation-delay: 0.3s; opacity: 0.12; }
+  .fiber-line:nth-child(6) { left: 35%; height: 100%; animation-delay: 1.8s; opacity: 0.05; }
+  @keyframes fiberPulse {
+    0%, 100% { opacity: 0.04; }
+    50% { opacity: 0.18; }
+  }
+
+  /* ===== DATA PACKET ANIMATION ===== */
+  .data-packet {
+    position: absolute; width: 4px; height: 20px; border-radius: 2px;
+    background: var(--green); box-shadow: 0 0 8px var(--green);
+    animation: packetFlow 6s linear infinite;
+  }
+  .data-packet:nth-child(7) { left: 8%; animation-delay: 0s; height: 16px; }
+  .data-packet:nth-child(8) { left: 45%; animation-delay: 2s; height: 12px; background: var(--blue); box-shadow: 0 0 8px var(--blue); }
+  .data-packet:nth-child(9) { left: 88%; animation-delay: 3.5s; height: 18px; }
+  .data-packet:nth-child(10) { left: 22%; animation-delay: 1s; height: 10px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+  .data-packet:nth-child(11) { left: 68%; animation-delay: 4s; height: 14px; background: var(--blue); box-shadow: 0 0 8px var(--blue); }
+  @keyframes packetFlow {
+    0% { top: -20px; opacity: 1; }
+    100% { top: 100vh; opacity: 0.3; }
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(6,10,18,0.85);
+    backdrop-filter: blur(24px) saturate(1.5);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  nav.scrolled { border-bottom-color: var(--green); box-shadow: 0 0 30px rgba(0,255,136,0.04); }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 40px;
+  }
+  .nav-brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--green); text-decoration: none;
+    display: flex; align-items: center; gap: 3px;
+    text-shadow: 0 0 20px rgba(0,255,136,0.3);
+  }
+  .nav-brand .cursor {
+    display: inline-block; width: 2px; height: 20px;
+    background: var(--green); animation: blink 1s infinite;
+    box-shadow: 0 0 6px var(--green);
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+  .nav-links { display: flex; gap: 6px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--text-dim);
+    font-size: 0.78rem; font-weight: 600;
+    padding: 7px 16px; border-radius: 8px;
+    transition: all 0.3s;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .nav-links a:hover { color: var(--green); background: var(--green-dim); }
+  .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); margin: 5px 0; transition: 0.3s; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 130px 40px 100px; position: relative; z-index: 1;
+  }
+  .hero-inner {
+    max-width: 1280px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center;
+  }
+  .hero-content { animation: fadeUp 0.8s ease-out; }
+
+  .hero-status {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 20px; border-radius: 100px;
+    background: var(--green-dim); border: 1px solid var(--green-mid);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; font-weight: 600; color: var(--green);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .status-led {
+    width: 8px; height: 8px; background: var(--green);
+    border-radius: 50; box-shadow: 0 0 8px var(--green);
+    animation: ledBlink 2s infinite;
+  }
+  @keyframes ledBlink { 0%,100% { opacity: 1; box-shadow: 0 0 8px var(--green); } 50% { opacity: 0.5; box-shadow: 0 0 3px var(--green); } }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 800; line-height: 1.05;
+    letter-spacing: -0.04em; margin-bottom: 12px;
+  }
+  .hero h1 .glow {
+    color: var(--green);
+    text-shadow: 0 0 40px rgba(0,255,136,0.3), 0 0 80px rgba(0,255,136,0.1);
+  }
+  .hero-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem; color: var(--blue);
+    margin-bottom: 24px; font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-role .typing-cursor {
+    display: inline-block; width: 8px; height: 16px;
+    background: var(--blue); animation: blink 0.8s infinite;
+    border-radius: 1px;
+  }
+  .hero-desc {
+    font-size: 1.04rem; color: var(--text-muted);
+    line-height: 1.8; max-width: 500px; margin-bottom: 40px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 30px; border-radius: 10px;
+    font-size: 0.86rem; font-weight: 600;
+    text-decoration: none; transition: all 0.3s;
+    cursor: pointer; border: none; font-family: 'Outfit', sans-serif;
+  }
+  .btn-primary {
+    background: var(--green); color: var(--bg);
+    box-shadow: 0 0 24px rgba(0,255,136,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(0,255,136,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border: 1.5px solid var(--border-bright);
+  }
+  .btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+
+  /* ===== HERO RACK SVG ===== */
+  .hero-visual { animation: fadeUp 0.8s ease-out 0.15s both; position: relative; }
+  .rack-scene {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: 0 8px 48px rgba(0,0,0,0.5), 0 0 60px rgba(0,255,136,0.03);
+    position: relative; overflow: hidden;
+  }
+  .rack-scene::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green), var(--blue), var(--purple));
+  }
+  .rack-scene svg { width: 100%; height: auto; display: block; }
+
+  /* ===== STATS ===== */
+  .stats-bar {
+    position: relative; z-index: 1;
+    padding: 0 40px; margin-top: -48px; margin-bottom: 48px;
+  }
+  .stats-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .stat-item {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px; text-align: center;
+    transition: all 0.35s; position: relative; overflow: hidden;
+  }
+  .stat-item::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--green);
+    transform: scaleX(0); transition: transform 0.4s;
+  }
+  .stat-item:hover::before { transform: scaleX(1); }
+  .stat-item:hover { border-color: var(--green); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+  .stat-num {
+    font-size: 2.2rem; font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--green);
+    text-shadow: 0 0 20px rgba(0,255,136,0.2);
+    line-height: 1.2;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 100px 40px; position: relative; z-index: 1; }
+  .section-inner { max-width: 1280px; margin: 0 auto; }
+  .section-header { margin-bottom: 56px; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label .label-line { width: 24px; height: 2px; background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700; letter-spacing: -0.03em;
+    margin-bottom: 14px; line-height: 1.12;
+  }
+  .section-desc {
+    font-size: 0.95rem; color: var(--text-muted);
+    max-width: 560px; line-height: 1.8; margin-bottom: 0;
+  }
+
+  /* ===== LEADERSHIP CARDS ===== */
+  .leader-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px; margin-top: 48px;
+  }
+  .leader-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px;
+    transition: all 0.35s; position: relative; overflow: hidden;
+  }
+  .leader-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: linear-gradient(90deg, var(--green), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .leader-card:hover { border-color: rgba(0,255,136,0.3); transform: translateY(-2px); }
+  .leader-card:hover::after { opacity: 1; }
+  .leader-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6rem; font-weight: 700; color: var(--green);
+    text-shadow: 0 0 16px rgba(0,255,136,0.2);
+    margin-bottom: 10px;
+  }
+  .leader-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
+  .leader-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; }
+
+  /* ===== EXPERIENCE ===== */
+  #experience {
+    background: var(--bg-raised);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .exp-grid { display: flex; flex-direction: column; gap: 24px; }
+  .exp-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 36px;
+    transition: all 0.35s; position: relative; overflow: hidden;
+  }
+  .exp-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--green), var(--blue));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .exp-card:hover { border-color: rgba(0,255,136,0.2); box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+  .exp-card:hover::before { opacity: 1; }
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+  .exp-role-wrap { display: flex; align-items: center; gap: 12px; }
+  .exp-led {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 8px var(--green);
+    flex-shrink: 0;
+  }
+  .exp-led.blue { background: var(--blue); box-shadow: 0 0 8px var(--blue); }
+  .exp-led.orange { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+  .exp-role { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; }
+  .exp-company { font-size: 0.9rem; color: var(--blue); font-weight: 500; margin-top: 4px; margin-left: 22px; }
+  .exp-location {
+    font-size: 0.8rem; color: var(--text-dim); margin-top: 4px; margin-left: 22px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .exp-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; color: var(--text-dim);
+    background: var(--surface); padding: 6px 16px;
+    border-radius: 100px; white-space: nowrap;
+    border: 1px solid var(--border);
+  }
+  .exp-bullets { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .exp-bullets li {
+    font-size: 0.88rem; color: var(--text-muted); line-height: 1.75;
+    padding-left: 22px; position: relative; list-style: none;
+  }
+  .exp-bullets li::before {
+    content: ''; position: absolute; left: 4px; top: 10px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 4px var(--green);
+  }
+  .exp-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .exp-tags span {
+    padding: 5px 14px; border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; font-weight: 600;
+    background: var(--green-dim); color: var(--green);
+    border: 1px solid rgba(0,255,136,0.12);
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== SKILLS ===== */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .skill-group {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px;
+    transition: all 0.35s; position: relative; overflow: hidden;
+  }
+  .skill-group:hover { border-color: var(--green-mid); }
+  .skill-group-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+  }
+  .skill-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .si-green { background: var(--green-dim); border: 1px solid rgba(0,255,136,0.15); }
+  .si-blue { background: var(--blue-dim); border: 1px solid rgba(0,170,255,0.15); }
+  .si-orange { background: var(--orange-dim); border: 1px solid rgba(255,112,67,0.15); }
+  .si-purple { background: var(--purple-dim); border: 1px solid rgba(156,124,255,0.15); }
+  .skill-group-title { font-size: 0.95rem; font-weight: 700; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-tags span {
+    padding: 5px 12px; border-radius: 6px;
+    font-size: 0.75rem; font-weight: 500;
+    background: var(--surface); color: var(--text-muted);
+    border: 1px solid var(--border); transition: all 0.25s;
+  }
+  .skill-tags span:hover { color: var(--green); border-color: var(--green); background: var(--green-dim); }
+
+  /* ===== CERTIFICATIONS ===== */
+  #certifications {
+    background: var(--bg-raised);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .cert-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px;
+    display: flex; align-items: flex-start; gap: 18px;
+    transition: all 0.35s;
+  }
+  .cert-card:hover { border-color: rgba(0,255,136,0.3); transform: translateY(-3px); }
+  .cert-badge {
+    width: 50px; height: 50px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 1.4rem;
+  }
+  .cert-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+  .cert-issuer { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
+  .cert-id { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-dim); }
+
+  /* ===== EDUCATION ===== */
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .edu-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px; transition: all 0.35s;
+  }
+  .edu-card:hover { border-color: rgba(0,170,255,0.3); }
+  .edu-degree { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+  .edu-school { font-size: 0.88rem; color: var(--blue); margin-bottom: 4px; }
+  .edu-year { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-dim); }
+
+  /* ===== CONTACT ===== */
+  .contact-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 64px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .contact-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: linear-gradient(90deg, var(--green), var(--blue), var(--purple), var(--orange));
+  }
+  .contact-card h2 { font-size: 2.4rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.03em; }
+  .contact-card p { color: var(--text-muted); font-size: 1rem; margin-bottom: 36px; max-width: 460px; margin-inline: auto; }
+  .contact-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .contact-info { display: flex; justify-content: center; gap: 36px; margin-bottom: 32px; flex-wrap: wrap; }
+  .contact-info-item {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem; color: var(--text-muted);
+  }
+  .contact-info-item svg { color: var(--green); flex-shrink: 0; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center; padding: 44px 40px;
+    font-size: 0.76rem; color: var(--text-dim);
+    border-top: 1px solid var(--border);
+    position: relative; z-index: 1;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== CAREER JOURNEY ===== */
+  .journey-track {
+    display: flex; align-items: flex-start; gap: 0;
+    position: relative; padding: 40px 0 20px;
+    overflow-x: auto; scrollbar-width: thin;
+    scrollbar-color: var(--green-mid) var(--bg-card);
+  }
+  .journey-line {
+    position: absolute; top: 58px; left: 0; right: 0;
+    height: 2px; background: var(--border);
+    z-index: 0;
+  }
+  .journey-line::after {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, var(--orange), var(--blue), var(--purple), var(--green));
+    opacity: 0.4;
+  }
+  .journey-node {
+    flex: 1; min-width: 150px; display: flex;
+    flex-direction: column; align-items: center;
+    position: relative; z-index: 1; text-align: center;
+  }
+  .journey-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--blue); border: 3px solid var(--bg);
+    margin-bottom: 12px; position: relative;
+  }
+  .jn-active {
+    background: var(--green) !important;
+    box-shadow: 0 0 12px var(--green), 0 0 24px rgba(0,255,136,0.3) !important;
+    animation: ledBlink 1.5s infinite;
+  }
+  .journey-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; font-weight: 700;
+    color: var(--text-dim); margin-bottom: 10px;
+    letter-spacing: 0.04em;
+  }
+  .journey-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+    width: 100%; max-width: 170px;
+    transition: all 0.3s;
+  }
+  .journey-card:hover { border-color: var(--green-mid); transform: translateY(-2px); }
+  .journey-card-title {
+    font-size: 0.82rem; font-weight: 700;
+    margin-bottom: 4px; line-height: 1.3;
+  }
+  .journey-card-sub {
+    font-size: 0.7rem; color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 868px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .hamburger { display: block; }
+    .nav-links.open {
+      display: flex; flex-direction: column;
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: var(--bg); padding: 20px 32px;
+      border-bottom: 1px solid var(--border); gap: 4px;
+    }
+    section { padding: 64px 20px; }
+    .edu-grid { grid-template-columns: 1fr; }
+    #community [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    .journey-track { overflow-x: auto; padding-bottom: 16px; }
+    .journey-node { min-width: 130px; }
+    .contact-card { padding: 36px 24px; }
+    .exp-card { padding: 24px; }
+    .hero { padding: 110px 20px 80px; }
+    .stats-bar { padding: 0 20px; }
+    .nav-inner { padding: 14px 20px; }
+  }
+  @media (max-width: 480px) {
+    .stats-inner { gap: 10px; }
+    .stat-item { padding: 20px 12px; }
+    .stat-num { font-size: 1.6rem; }
+  }
+
+  /* ===== ANIMATIONS ===== */
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background Effects -->
+<div class="grid-bg"></div>
+<div class="fiber-lines">
+  <div class="fiber-line"></div>
+  <div class="fiber-line"></div>
+  <div class="fiber-line"></div>
+  <div class="fiber-line"></div>
+  <div class="fiber-line"></div>
+  <div class="fiber-line"></div>
+  <div class="data-packet"></div>
+  <div class="data-packet"></div>
+  <div class="data-packet"></div>
+  <div class="data-packet"></div>
+  <div class="data-packet"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">DK<span class="cursor"></span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#leadership">leadership</a></li>
+      <li><a href="#experience">experience</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#certifications">certs</a></li>
+      <li><a href="#community">community</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-status"><span class="status-led"></span> Open to Opportunities</div>
+      <h1>Deepak Kumar<br><span class="glow">Kalakota</span></h1>
+      <div class="hero-role">DCO Lead | Infrastructure Manager | Team Builder <span class="typing-cursor"></span></div>
+      <p class="hero-desc">
+        Data Center Operations Lead &amp; DCOSE Program Partner with 5+ years driving 
+        operational excellence, team leadership, and infrastructure scalability across mission-critical 
+        AWS hyperscale environments. Proven people manager — mentoring 20+ technicians, conducting 40+ interviews, 
+        and leading cross-functional programs from planning through Go-Live.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">
+          Get in Touch
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#experience" class="btn btn-outline">View Experience</a>
+        <a href="#" class="btn btn-outline" id="resumeBtn" onclick="alert('Resume PDF coming soon — contact deepakjobs1902@gmail.com'); return false;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Resume
+        </a>
+      </div>
+    </div>
+
+    <!-- RACK ILLUSTRATION -->
+    <div class="hero-visual">
+      <div class="rack-scene">
+        <svg viewBox="0 0 440 400" xmlns="http://www.w3.org/2000/svg">
+          <!-- Rack Frame Left -->
+          <rect x="30" y="20" width="170" height="360" rx="6" fill="#0B1120" stroke="#1A2545" stroke-width="1.5"/>
+          <rect x="30" y="20" width="170" height="12" rx="3" fill="#182040"/>
+          <!-- Rack LEDs Left -->
+          <g id="rack1-leds">
+            <rect x="38" y="42" width="154" height="28" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="52" cy="56" r="3" fill="#00FF88" opacity="0.9"><animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.5s" repeatCount="indefinite"/></circle>
+            <circle cx="62" cy="56" r="3" fill="#00AAFF" opacity="0.7"><animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite"/></circle>
+            <circle cx="72" cy="56" r="3" fill="#00FF88" opacity="0.8"/>
+            <rect x="82" y="50" width="100" height="3" rx="1" fill="#182040"/>
+            <rect x="82" y="56" width="80" height="3" rx="1" fill="#182040"/>
+            <rect x="82" y="62" width="60" height="2" rx="1" fill="#1A2545"/>
+
+            <rect x="38" y="76" width="154" height="28" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="52" cy="90" r="3" fill="#00FF88"><animate attributeName="opacity" values="1;0.5;1" dur="1.8s" repeatCount="indefinite"/></circle>
+            <circle cx="62" cy="90" r="3" fill="#FF7043"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="3s" repeatCount="indefinite"/></circle>
+            <circle cx="72" cy="90" r="3" fill="#00FF88"/>
+            <rect x="82" y="84" width="100" height="3" rx="1" fill="#182040"/>
+            <rect x="82" y="90" width="90" height="3" rx="1" fill="#182040"/>
+
+            <rect x="38" y="110" width="154" height="28" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="52" cy="124" r="3" fill="#00AAFF"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.2s" repeatCount="indefinite"/></circle>
+            <circle cx="62" cy="124" r="3" fill="#00FF88"/>
+            <circle cx="72" cy="124" r="3" fill="#00FF88"><animate attributeName="opacity" values="1;0.6;1" dur="1.2s" repeatCount="indefinite"/></circle>
+            <rect x="82" y="118" width="100" height="3" rx="1" fill="#182040"/>
+            <rect x="82" y="124" width="70" height="3" rx="1" fill="#182040"/>
+
+            <rect x="38" y="144" width="154" height="28" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="52" cy="158" r="3" fill="#00FF88"/>
+            <circle cx="62" cy="158" r="3" fill="#00FF88"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.6s" repeatCount="indefinite"/></circle>
+            <circle cx="72" cy="158" r="3" fill="#9C7CFF"/>
+            <rect x="82" y="152" width="100" height="3" rx="1" fill="#182040"/>
+            <rect x="82" y="158" width="85" height="3" rx="1" fill="#182040"/>
+
+            <rect x="38" y="178" width="154" height="28" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="52" cy="192" r="3" fill="#00FF88"><animate attributeName="opacity" values="1;0.4;1" dur="2.5s" repeatCount="indefinite"/></circle>
+            <circle cx="62" cy="192" r="3" fill="#00AAFF"/>
+            <circle cx="72" cy="192" r="3" fill="#00FF88"/>
+            <rect x="82" y="186" width="100" height="3" rx="1" fill="#182040"/>
+            <rect x="82" y="192" width="95" height="3" rx="1" fill="#182040"/>
+
+            <rect x="38" y="212" width="154" height="28" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="52" cy="226" r="3" fill="#00FF88"/>
+            <circle cx="62" cy="226" r="3" fill="#00FF88"><animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.9s" repeatCount="indefinite"/></circle>
+            <circle cx="72" cy="226" r="3" fill="#00AAFF"><animate attributeName="opacity" values="0.6;1;0.6" dur="2.8s" repeatCount="indefinite"/></circle>
+            <rect x="82" y="220" width="100" height="3" rx="1" fill="#182040"/>
+            <rect x="82" y="226" width="75" height="3" rx="1" fill="#182040"/>
+          </g>
+
+          <!-- Rack Frame Right -->
+          <rect x="220" y="20" width="190" height="360" rx="6" fill="#0B1120" stroke="#1A2545" stroke-width="1.5"/>
+          <rect x="220" y="20" width="190" height="12" rx="3" fill="#182040"/>
+          <!-- Network Switch Panel -->
+          <g>
+            <rect x="228" y="42" width="174" height="36" rx="4" fill="#0F1628" stroke="#243060" stroke-width="1"/>
+            <text x="236" y="56" font-family="JetBrains Mono" font-size="7" fill="#3E5280" font-weight="600">ToR SWITCH — 48-PORT</text>
+            <!-- Ports -->
+            <g transform="translate(236, 62)">
+              <rect x="0" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="0" y="1" width="5" height="2" rx="0.5" fill="#00FF88" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="0.8s" repeatCount="indefinite"/></rect>
+              <rect x="7" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="7" y="1" width="5" height="2" rx="0.5" fill="#00FF88" opacity="0.7"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="1.1s" repeatCount="indefinite"/></rect>
+              <rect x="14" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="14" y="1" width="5" height="2" rx="0.5" fill="#00AAFF" opacity="0.9"><animate attributeName="opacity" values="0.9;0.4;0.9" dur="0.6s" repeatCount="indefinite"/></rect>
+              <rect x="21" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="21" y="1" width="5" height="2" rx="0.5" fill="#00FF88"/>
+              <rect x="28" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="28" y="1" width="5" height="2" rx="0.5" fill="#00FF88" opacity="0.6"><animate attributeName="opacity" values="0.6;0.2;0.6" dur="1.4s" repeatCount="indefinite"/></rect>
+              <rect x="35" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="35" y="1" width="5" height="2" rx="0.5" fill="#00AAFF"><animate attributeName="opacity" values="1;0.3;1" dur="0.9s" repeatCount="indefinite"/></rect>
+              <rect x="42" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="42" y="1" width="5" height="2" rx="0.5" fill="#00FF88" opacity="0.5"/>
+              <rect x="49" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="49" y="1" width="5" height="2" rx="0.5" fill="#FF7043" opacity="0.8"><animate attributeName="opacity" values="0.8;0;0.8" dur="2s" repeatCount="indefinite"/></rect>
+              <!-- more ports row 2 -->
+              <rect x="60" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="60" y="1" width="5" height="2" rx="0.5" fill="#00FF88"/>
+              <rect x="67" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="67" y="1" width="5" height="2" rx="0.5" fill="#00FF88" opacity="0.7"><animate attributeName="opacity" values="0.7;0.1;0.7" dur="1.3s" repeatCount="indefinite"/></rect>
+              <rect x="74" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="74" y="1" width="5" height="2" rx="0.5" fill="#00AAFF" opacity="0.6"/>
+              <rect x="81" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="88" y="0" width="5" height="8" rx="1" fill="#182040" stroke="#243060" stroke-width="0.5"/>
+              <rect x="88" y="1" width="5" height="2" rx="0.5" fill="#00FF88"><animate attributeName="opacity" values="1;0.5;1" dur="0.7s" repeatCount="indefinite"/></rect>
+            </g>
+          </g>
+          <!-- Server Units Right -->
+          <g>
+            <rect x="228" y="86" width="174" height="24" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="240" cy="98" r="2.5" fill="#00FF88"><animate attributeName="opacity" values="1;0.4;1" dur="1.7s" repeatCount="indefinite"/></circle>
+            <circle cx="248" cy="98" r="2.5" fill="#00FF88"/>
+            <rect x="256" y="93" width="60" height="2.5" rx="1" fill="#182040"/>
+            <rect x="256" y="99" width="45" height="2" rx="1" fill="#1A2545"/>
+            <text x="370" y="101" font-family="JetBrains Mono" font-size="6" fill="#3E5280" text-anchor="end">1U</text>
+
+            <rect x="228" y="116" width="174" height="24" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="240" cy="128" r="2.5" fill="#00AAFF"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="2.1s" repeatCount="indefinite"/></circle>
+            <circle cx="248" cy="128" r="2.5" fill="#00FF88"/>
+            <rect x="256" y="123" width="60" height="2.5" rx="1" fill="#182040"/>
+            <rect x="256" y="129" width="50" height="2" rx="1" fill="#1A2545"/>
+            <text x="370" y="131" font-family="JetBrains Mono" font-size="6" fill="#3E5280" text-anchor="end">2U</text>
+
+            <!-- GPU Server (bigger) -->
+            <rect x="228" y="146" width="174" height="40" rx="3" fill="#0F1628" stroke="#243060"/>
+            <text x="236" y="160" font-family="JetBrains Mono" font-size="6.5" fill="#9C7CFF" font-weight="600">GPU SERVER — 4U</text>
+            <circle cx="240" cy="174" r="2.5" fill="#9C7CFF"><animate attributeName="opacity" values="1;0.5;1" dur="1.3s" repeatCount="indefinite"/></circle>
+            <circle cx="248" cy="174" r="2.5" fill="#00FF88"/>
+            <circle cx="256" cy="174" r="2.5" fill="#00FF88"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="0.9s" repeatCount="indefinite"/></circle>
+            <circle cx="264" cy="174" r="2.5" fill="#00AAFF"/>
+            <rect x="275" y="168" width="80" height="3" rx="1" fill="#182040"/>
+            <rect x="275" y="174" width="60" height="2" rx="1" fill="#1A2545"/>
+            <text x="370" y="177" font-family="JetBrains Mono" font-size="6" fill="#3E5280" text-anchor="end">4U</text>
+
+            <rect x="228" y="192" width="174" height="24" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="240" cy="204" r="2.5" fill="#00FF88"/>
+            <circle cx="248" cy="204" r="2.5" fill="#00FF88"><animate attributeName="opacity" values="0.9;0.3;0.9" dur="2.4s" repeatCount="indefinite"/></circle>
+            <rect x="256" y="199" width="60" height="2.5" rx="1" fill="#182040"/>
+
+            <rect x="228" y="222" width="174" height="24" rx="3" fill="#0F1628" stroke="#1A2545"/>
+            <circle cx="240" cy="234" r="2.5" fill="#00AAFF"/>
+            <circle cx="248" cy="234" r="2.5" fill="#00FF88"><animate attributeName="opacity" values="1;0.6;1" dur="1.1s" repeatCount="indefinite"/></circle>
+            <rect x="256" y="229" width="60" height="2.5" rx="1" fill="#182040"/>
+          </g>
+
+          <!-- Fiber cables between racks -->
+          <g opacity="0.4">
+            <path d="M200 60 Q210 60 210 80 Q210 100 220 100" stroke="#00FF88" stroke-width="1.5" fill="none" stroke-dasharray="4,3"><animate attributeName="stroke-dashoffset" from="0" to="-14" dur="2s" repeatCount="indefinite"/></path>
+            <path d="M200 90 Q212 90 212 120 Q212 130 220 130" stroke="#00AAFF" stroke-width="1.5" fill="none" stroke-dasharray="4,3"><animate attributeName="stroke-dashoffset" from="0" to="-14" dur="1.8s" repeatCount="indefinite"/></path>
+            <path d="M200 158 Q215 158 215 170 Q215 175 220 175" stroke="#9C7CFF" stroke-width="1.5" fill="none" stroke-dasharray="4,3"><animate attributeName="stroke-dashoffset" from="0" to="-14" dur="2.2s" repeatCount="indefinite"/></path>
+            <path d="M200 192 Q210 192 210 210 Q210 235 220 235" stroke="#00FF88" stroke-width="1" fill="none" stroke-dasharray="3,4"><animate attributeName="stroke-dashoffset" from="0" to="-14" dur="2.5s" repeatCount="indefinite"/></path>
+          </g>
+
+          <!-- PDU / Power Bar -->
+          <rect x="38" y="260" width="154" height="20" rx="3" fill="#0F1628" stroke="#243060"/>
+          <text x="46" y="274" font-family="JetBrains Mono" font-size="7" fill="#FF7043" font-weight="600">PDU — 208V / 30A</text>
+          <circle cx="170" cy="270" r="3" fill="#00FF88"><animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/></circle>
+          <circle cx="180" cy="270" r="3" fill="#00FF88"/>
+
+          <!-- UPS Indicator -->
+          <rect x="38" y="286" width="154" height="20" rx="3" fill="#0F1628" stroke="#1A2545"/>
+          <text x="46" y="300" font-family="JetBrains Mono" font-size="7" fill="#3E5280">UPS — 2N REDUNDANT</text>
+          <circle cx="180" cy="296" r="3" fill="#00FF88"/>
+
+          <!-- Cooling bar -->
+          <rect x="228" y="260" width="174" height="20" rx="3" fill="#0F1628" stroke="#1A2545"/>
+          <text x="236" y="274" font-family="JetBrains Mono" font-size="7" fill="#00AAFF" font-weight="600">CRAH — COLD AISLE</text>
+          <circle cx="384" cy="270" r="3" fill="#00AAFF"><animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/></circle>
+
+          <!-- Monitoring -->
+          <rect x="228" y="286" width="174" height="20" rx="3" fill="#0F1628" stroke="#1A2545"/>
+          <text x="236" y="300" font-family="JetBrains Mono" font-size="7" fill="#3E5280">BMS — ALL SYSTEMS NOMINAL</text>
+
+          <!-- Bottom status bar -->
+          <rect x="30" y="320" width="380" height="50" rx="6" fill="#0B1120" stroke="#1A2545"/>
+          <text x="46" y="340" font-family="JetBrains Mono" font-size="8" fill="#00FF88" font-weight="600">SYSTEM STATUS</text>
+          <text x="46" y="358" font-family="JetBrains Mono" font-size="7" fill="#3E5280">UPTIME: <tspan fill="#00FF88">99.99%</tspan>  |  RACKS: <tspan fill="#00AAFF">ONLINE</tspan>  |  ALERTS: <tspan fill="#00FF88">0</tspan></text>
+          <!-- Status LEDs -->
+          <circle cx="370" cy="338" r="4" fill="#00FF88" opacity="0.9"><animate attributeName="opacity" values="0.9;0.4;0.9" dur="1s" repeatCount="indefinite"/></circle>
+          <circle cx="382" cy="338" r="4" fill="#00FF88"/>
+          <circle cx="394" cy="338" r="4" fill="#00AAFF"><animate attributeName="opacity" values="0.7;0.3;0.7" dur="1.6s" repeatCount="indefinite"/></circle>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num">5+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat-item"><div class="stat-num">20+</div><div class="stat-label">Technicians Mentored</div></div>
+    <div class="stat-item"><div class="stat-num">40+</div><div class="stat-label">Technical Interviews</div></div>
+    <div class="stat-item"><div class="stat-num">99.99%</div><div class="stat-label">Uptime Maintained</div></div>
+  </div>
+</div>
+
+<!-- LEADERSHIP -->
+<section id="leadership">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> Why I Lead</div>
+      <h2 class="section-title">Leadership Highlights</h2>
+      <p class="section-desc">Key management outcomes that demonstrate readiness for a senior operations or infrastructure manager role.</p>
+    </div>
+    <div class="leader-grid">
+      <div class="leader-card reveal">
+        <div class="leader-num">20+</div>
+        <div class="leader-title">Technicians Managed</div>
+        <div class="leader-desc">Built and led a team through structured OJT onboarding, daily shift coordination, and performance development toward L4 promotions.</div>
+      </div>
+      <div class="leader-card reveal">
+        <div class="leader-num">40+</div>
+        <div class="leader-title">Interviews Conducted</div>
+        <div class="leader-desc">Directly influenced site hiring and talent strategy by conducting technical interviews for L3/L4 roles.</div>
+      </div>
+      <div class="leader-card reveal">
+        <div class="leader-num">30%</div>
+        <div class="leader-title">Handover Time Reduced</div>
+        <div class="leader-desc">Designed and deployed automation tools (Quip ticket generator, on-call bot) that streamlined shift transitions.</div>
+      </div>
+      <div class="leader-card reveal">
+        <div class="leader-num">0</div>
+        <div class="leader-title">Downtime at Go-Live</div>
+        <div class="leader-desc">Led Road to Launch (RTL) — drove cross-functional testing, vendor coordination, and validation ensuring zero-downtime launches.</div>
+      </div>
+      <div class="leader-card reveal">
+        <div class="leader-num">Multi-Site</div>
+        <div class="leader-title">Regional Support</div>
+        <div class="leader-desc">Provided cross-site support across multiple AWS facilities, aligning processes and standardizing compliance protocols.</div>
+      </div>
+      <div class="leader-card reveal">
+        <div class="leader-num">ITIL</div>
+        <div class="leader-title">Process-Driven Ops</div>
+        <div class="leader-desc">Applied ITIL-aligned change management, incident management, and continuous improvement practices to maintain SLAs.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER JOURNEY TIMELINE -->
+<section id="journey" style="background:var(--bg-raised);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> Career Path</div>
+      <h2 class="section-title">My Journey</h2>
+      <p class="section-desc">From hands-on technician in India to leading operations at AWS — a visual timeline of growth.</p>
+    </div>
+
+    <div class="journey-track reveal">
+      <div class="journey-line"></div>
+
+      <div class="journey-node">
+        <div class="journey-dot" style="background:var(--orange);box-shadow:0 0 10px var(--orange);"></div>
+        <div class="journey-year">2019</div>
+        <div class="journey-card">
+          <div class="journey-card-title">🎓 B.Tech — Computer Science</div>
+          <div class="journey-card-sub">Sri Indu College, JNTU — India</div>
+        </div>
+      </div>
+
+      <div class="journey-node">
+        <div class="journey-dot" style="background:var(--orange);box-shadow:0 0 10px var(--orange);"></div>
+        <div class="journey-year">2019–21</div>
+        <div class="journey-card">
+          <div class="journey-card-title">🔧 Junior DC Technician</div>
+          <div class="journey-card-sub">V-CYAN IT Services — Hyderabad</div>
+        </div>
+      </div>
+
+      <div class="journey-node">
+        <div class="journey-dot" style="background:var(--blue);box-shadow:0 0 10px var(--blue);"></div>
+        <div class="journey-year">2023</div>
+        <div class="journey-card">
+          <div class="journey-card-title">🎓 Master's — IT Management</div>
+          <div class="journey-card-sub">Webster University — St. Louis, MO</div>
+        </div>
+      </div>
+
+      <div class="journey-node">
+        <div class="journey-dot" style="background:var(--blue);box-shadow:0 0 10px var(--blue);"></div>
+        <div class="journey-year">2023–24</div>
+        <div class="journey-card">
+          <div class="journey-card-title">🖥️ System Engineer</div>
+          <div class="journey-card-sub">Zenith Services — Plainsboro, NJ</div>
+        </div>
+      </div>
+
+      <div class="journey-node">
+        <div class="journey-dot" style="background:var(--purple);box-shadow:0 0 10px var(--purple);"></div>
+        <div class="journey-year">2023–24</div>
+        <div class="journey-card">
+          <div class="journey-card-title">🚀 Operations Manager</div>
+          <div class="journey-card-sub">Legal Fiber — NYC (Remote)</div>
+        </div>
+      </div>
+
+      <div class="journey-node">
+        <div class="journey-dot jn-active"></div>
+        <div class="journey-year">2024–Now</div>
+        <div class="journey-card" style="border-color:rgba(0,255,136,0.3);background:rgba(0,255,136,0.04);">
+          <div class="journey-card-title">⚡ DCO Lead — DCOSE Partner</div>
+          <div class="journey-card-sub">Amazon Web Services — New Carlisle, IN</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> Professional Experience</div>
+      <h2 class="section-title">Where I've Built &amp; Led</h2>
+      <p class="section-desc">Progressing from hands-on technician to operations lead across hyperscale data center environments.</p>
+    </div>
+
+    <div class="exp-grid">
+      <div class="exp-card reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role-wrap"><span class="exp-led"></span><span class="exp-role">Data Center Operations Lead</span></div>
+            <div class="exp-company">Amazon Web Services (AWS) — DCOSE Program Partner</div>
+            <div class="exp-location">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              New Carlisle, IN
+            </div>
+          </div>
+          <span class="exp-date">Dec 2024 — Present</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Serve as SME for critical infrastructure (power, cooling, electrical) across multiple data halls, handling escalations and first-responder incident management.</li>
+          <li>Led and mentored 20+ technicians through structured OJT programs; conducted 40+ technical interviews for L3/L4 roles influencing site talent strategy.</li>
+          <li>Developed Quip-based ticket summary auto-generator and on-call bot prototype approved for Sev-Vision integration — reducing handover time by 30%.</li>
+          <li>Drove Road to Launch (RTL) readiness with cross-functional testing and validation (L1-L5 commissioning) ensuring zero downtime for Go-Live.</li>
+          <li>Managed complex hardware escalations including ToR link-flap diagnosis, coordinating with NRE teams and documenting SOP updates.</li>
+          <li>Responded to network outages by diagnosing Layer 1 (optical/fiber) through Layer 3 (routing/switching) issues across hyperscale infrastructure.</li>
+          <li>Spearheaded WDID safety remediations after RPM cable incidents; managed design limitations and risks of datacenter electrical infrastructure.</li>
+          <li>Led process improvements: STORM cart deployment, resolver group alias validation, CTI escalation mapping, improving global ticket routing.</li>
+          <li>Worked cross-functionally with Infra Delivery, Deployment, GND, and IDND teams to optimize handoff procedures and reduce turnaround to production go-live.</li>
+          <li>Oversaw rack-level asset audits and RMA lifecycles; coordinated vendor interventions while maintaining contractual SLAs.</li>
+        </ul>
+        <div class="exp-tags">
+          <span>AWS</span><span>Critical Infrastructure</span><span>Team Lead</span><span>Automation</span><span>Network Ops</span><span>DCIM</span><span>Incident Mgmt</span><span>L1-L3</span>
+        </div>
+      </div>
+
+      <div class="exp-card reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role-wrap"><span class="exp-led blue"></span><span class="exp-role">System Engineer — DC Infrastructure</span></div>
+            <div class="exp-company">Zenith Services Inc.</div>
+            <div class="exp-location">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Plainsboro, NJ
+            </div>
+          </div>
+          <span class="exp-date">Aug 2023 — Oct 2024</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Managed deployment and maintenance of Linux/Windows servers across production and staging environments, achieving 99.99% uptime.</li>
+          <li>Monitored system health using CloudWatch/CloudTrail; performed log analysis and resolved performance bottlenecks.</li>
+          <li>Maintained and optimized DNS, DHCP, and network routing configurations for stable hybrid infrastructure connectivity.</li>
+          <li>Conducted routine inspections of power, cooling, and network capacity to anticipate growth and optimize resources.</li>
+          <li>Maintained accurate equipment inventory and audit records across the hardware lifecycle for compliance and reporting.</li>
+        </ul>
+        <div class="exp-tags">
+          <span>Linux</span><span>Windows Server</span><span>CloudWatch</span><span>DNS/DHCP</span><span>Hardware Ops</span><span>99.99% Uptime</span>
+        </div>
+      </div>
+
+      <div class="exp-card reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role-wrap"><span class="exp-led" style="background:var(--purple);box-shadow:0 0 8px var(--purple);"></span><span class="exp-role">Operations Manager</span></div>
+            <div class="exp-company">Legal Fiber — Legal-Tech Startup (Freelance)</div>
+            <div class="exp-location">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              New York City Metropolitan Area · Remote
+            </div>
+          </div>
+          <span class="exp-date">Nov 2023 — Oct 2024</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Managed daily operations of an AI-driven legal-tech startup, including workflow design, client support, and cross-functional team coordination.</li>
+          <li>Built and maintained systems for client intake, quote processing, and communication pipelines between clients and legal professionals.</li>
+          <li>Collaborated closely with tech and product teams to improve the platform's user experience and backend operational efficiency.</li>
+          <li>Scaled the business by creating SOPs for onboarding lawyers, managing client cases, and standardizing internal workflows.</li>
+          <li>Monitored performance metrics and made data-driven decisions to improve response times and attorney match success rates.</li>
+          <li>Oversaw legal compliance, document handling, and internal security measures to ensure client trust and data integrity.</li>
+          <li>Managed external vendors and tools for communication, document signing, and project tracking across the organization.</li>
+          <li>Contributed to building a collaborative and proactive work culture in a fast-paced startup environment.</li>
+        </ul>
+        <div class="exp-tags">
+          <span>Operations Mgmt</span><span>Team Management</span><span>SOP Development</span><span>Workflow Design</span><span>Vendor Mgmt</span><span>Data-Driven Decisions</span><span>Startup Ops</span>
+        </div>
+      </div>
+
+      <div class="exp-card reveal">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role-wrap"><span class="exp-led orange"></span><span class="exp-role">Junior Data Center Technician</span></div>
+            <div class="exp-company">V-CYAN IT Services</div>
+            <div class="exp-location">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Hyderabad, India
+            </div>
+          </div>
+          <span class="exp-date">May 2019 — Dec 2021</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Supported server installations, network cabling (copper/fiber), and switch configurations while maintaining environmental standards.</li>
+          <li>Performed hardware diagnostics and component replacements (HDDs, fans, PSUs) following ESD and safety procedures.</li>
+          <li>Conducted daily system and environment checks (power, cooling, alarms) to maintain 24/7 uptime.</li>
+          <li>Collaborated with IT team on hardware failure response, security compliance, and disaster recovery documentation.</li>
+          <li>Logged maintenance activities and audit data into DCIM systems for asset tracking and lifecycle management.</li>
+        </ul>
+        <div class="exp-tags">
+          <span>Rack &amp; Stack</span><span>Cabling</span><span>Hardware Diag</span><span>DCIM</span><span>24/7 Ops</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS & INNOVATIONS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> Projects &amp; Innovations</div>
+      <h2 class="section-title">What I've Built</h2>
+      <p class="section-desc">Automation tools and process innovations created to solve real operational challenges at scale.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;">
+      <div class="exp-card reveal" style="border-top:2px solid var(--green);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div class="skill-icon si-green" style="width:36px;height:36px;font-size:1rem;">🤖</div>
+          <div>
+            <div style="font-weight:700;font-size:1rem;">On-Call Bot Automation</div>
+            <div style="font-size:0.75rem;color:var(--green);font-family:'JetBrains Mono',monospace;">APPROVED FOR SEV-VISION INTEGRATION</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Proposed and developed an on-call bot concept that integrates with Boost, CTI, and SIM data to dynamically display the correct escalation contact based on site, shift timing, and ticket severity.</li>
+          <li>Designed the workflow to extract Boost ticket context and match it against resolver group schedules, eliminating manual escalation path lookups.</li>
+          <li>Prototype was accepted for Sev-Vision integration and is currently under development, with expected improvements in response time and reduction in escalation errors.</li>
+        </ul>
+        <div class="exp-tags" style="margin-top:14px;">
+          <span>Automation</span><span>Boost/CTI/SIM</span><span>Sev-Vision</span><span>Python</span>
+        </div>
+      </div>
+
+      <div class="exp-card reveal" style="border-top:2px solid var(--blue);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div class="skill-icon si-blue" style="width:36px;height:36px;font-size:1rem;">📋</div>
+          <div>
+            <div style="font-weight:700;font-size:1rem;">Quip Ticket Summary Generator</div>
+            <div style="font-size:0.75rem;color:var(--blue);font-family:'JetBrains Mono',monospace;">30% HANDOVER TIME REDUCTION</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Created a Quip-based prototype that auto-fills ticket summaries during shift handovers, allowing technicians to view on-call contacts and SEV status in one dashboard.</li>
+          <li>Designed a Boost ticket summary extractor to improve on-call handovers and centralize incident tracking across shifts.</li>
+          <li>Reduced manual handover time by 30% and improved incident visibility across 24/7 operations.</li>
+        </ul>
+        <div class="exp-tags" style="margin-top:14px;">
+          <span>Quip Dashboards</span><span>Incident Tracking</span><span>Shift Ops</span><span>ITSM</span>
+        </div>
+      </div>
+
+      <div class="exp-card reveal" style="border-top:2px solid var(--purple);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div class="skill-icon si-purple" style="width:36px;height:36px;font-size:1rem;">🗺️</div>
+          <div>
+            <div style="font-weight:700;font-size:1rem;">CTI Escalation Mapping</div>
+            <div style="font-size:0.75rem;color:var(--purple);font-family:'JetBrains Mono',monospace;">GLOBAL TICKET ROUTING IMPROVEMENT</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Devised a workflow to automatically map ticket context to resolver group schedules, eliminating critical escalation errors and improving SLA adherence.</li>
+          <li>Led resolver group alias validation and STORM cart deployment, standardizing escalation processes across the site.</li>
+          <li>Improved global ticket routing reliability, reducing misdirected escalations and accelerating mean time to resolution.</li>
+        </ul>
+        <div class="exp-tags" style="margin-top:14px;">
+          <span>CTI Mapping</span><span>STORM Cart</span><span>SLA Improvement</span><span>Process Design</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> Technical Expertise</div>
+      <h2 class="section-title">Skills &amp; Toolset</h2>
+      <p class="section-desc">Deep proficiency across infrastructure, networking, systems, and operations management.</p>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <div class="skill-group-header"><div class="skill-icon si-green">⚡</div><div class="skill-group-title">Critical Infrastructure</div></div>
+        <div class="skill-tags">
+          <span>Power &amp; Cooling Mgmt</span><span>UPS Systems</span><span>PDU / RPP</span><span>2N / N+1 Redundancy</span><span>Capacity Planning</span><span>BMS</span><span>TIA-942</span><span>ASHRAE</span><span>Concurrent Maintainability</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header"><div class="skill-icon si-blue">🌐</div><div class="skill-group-title">Network Infrastructure</div></div>
+        <div class="skill-tags">
+          <span>TCP/IP</span><span>DNS / DHCP</span><span>VLANs</span><span>OSPF / BGP</span><span>ToR Switches</span><span>Fiber Optics</span><span>Copper Cabling</span><span>L1-L3 Troubleshooting</span><span>DWDM</span><span>Link-Flap Analysis</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header"><div class="skill-icon si-orange">🖥️</div><div class="skill-group-title">Server Hardware &amp; Systems</div></div>
+        <div class="skill-tags">
+          <span>POST / BIOS / PXE</span><span>IPMI / BMC</span><span>PSU / BBU Validation</span><span>GPU Servers</span><span>Linux (RHEL/Ubuntu)</span><span>Windows Server</span><span>VMware</span><span>Component Replacement</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header"><div class="skill-icon si-purple">🔧</div><div class="skill-group-title">Monitoring &amp; Automation</div></div>
+        <div class="skill-tags">
+          <span>CloudWatch</span><span>CloudTrail</span><span>Grafana</span><span>ServiceNow (ITSM)</span><span>DCIM</span><span>Python</span><span>Bash Scripting</span><span>Sev-Vision</span><span>Quip Dashboards</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header"><div class="skill-icon si-green">📋</div><div class="skill-group-title">Operations &amp; Compliance</div></div>
+        <div class="skill-tags">
+          <span>ITIL</span><span>Change Management</span><span>Incident Response</span><span>RCA / SOP Docs</span><span>SLA Management</span><span>Asset Lifecycle</span><span>Vendor Coordination</span><span>24/7 Shift Ops</span><span>OSHA 10</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header"><div class="skill-icon si-purple">👔</div><div class="skill-group-title">Management &amp; Leadership</div></div>
+        <div class="skill-tags">
+          <span>Team Building &amp; Hiring</span><span>OJT &amp; Mentoring</span><span>Performance Coaching</span><span>Workforce Planning</span><span>Stakeholder Communication</span><span>Budget &amp; Resources</span><span>KPI Tracking</span><span>Conflict Resolution</span><span>Kaizen / CI</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header"><div class="skill-icon si-orange">📊</div><div class="skill-group-title">Program Management</div></div>
+        <div class="skill-tags">
+          <span>ITIL Framework</span><span>RTL / Go-Live</span><span>Risk Assessment</span><span>Change Advisory Board</span><span>Vendor &amp; Contract Mgmt</span><span>RCA &amp; Post-Mortems</span><span>Agile / Kanban</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-header"><div class="skill-icon si-blue">☁️</div><div class="skill-group-title">Cloud &amp; Platforms</div></div>
+        <div class="skill-tags">
+          <span>AWS (EC2, Console)</span><span>Microsoft Azure</span><span>Oracle Cloud</span><span>Boost / SIM / CTI</span><span>SOC 2 / ISO 27001</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> Credentials</div>
+      <h2 class="section-title">Certifications</h2>
+      <p class="section-desc">Industry-recognized certifications validating cloud, infrastructure, and safety expertise.</p>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card reveal">
+        <div class="cert-badge si-blue">☁️</div>
+        <div>
+          <div class="cert-name">Microsoft Azure Developer Associate</div>
+          <div class="cert-issuer">Microsoft — AZ-204</div>
+          <div class="cert-id">Cloud Application Development</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-badge si-orange">🧠</div>
+        <div>
+          <div class="cert-name">Oracle Cloud Infrastructure 2023 AI</div>
+          <div class="cert-issuer">Oracle</div>
+          <div class="cert-id">AI Certified Professional</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-badge si-green">🛡️</div>
+        <div>
+          <div class="cert-name">OSHA 10 — General Industry Safety</div>
+          <div class="cert-issuer">Occupational Safety &amp; Health Administration</div>
+          <div class="cert-id">Workplace Safety Compliance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> Education</div>
+      <h2 class="section-title">Academic Background</h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-degree">Master's in Information Technology Management</div>
+        <div class="edu-school">Webster University — St. Louis, MO</div>
+        <div class="edu-year">2023</div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-degree">Bachelor of Computer Science &amp; Engineering</div>
+        <div class="edu-school">Sri Indu College of Engineering, JNTU — India</div>
+        <div class="edu-year">2019</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY & VOLUNTEERING -->
+<section id="community">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> Community & Volunteering</div>
+      <h2 class="section-title">Beyond the Data Center</h2>
+      <p class="section-desc">Building community, mentoring students, and championing diversity beyond the server room.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="exp-card reveal" style="border-left:3px solid var(--purple);">
+        <div class="exp-role-wrap" style="margin-bottom:12px;">
+          <span class="exp-led" style="background:var(--purple);box-shadow:0 0 8px var(--purple);"></span>
+          <span class="exp-role">Board Member &amp; Outreach Lead</span>
+        </div>
+        <div class="exp-company" style="margin-left:22px;">Asians at SBN — Affinity Group</div>
+        <ul class="exp-bullets" style="margin-top:14px;">
+          <li>Served as Board Member and Outreach Lead for the Asians at SBN affinity group, championing diversity, inclusion, and cross-cultural collaboration within the organization.</li>
+          <li>Organized and hosted community events, cultural celebrations, and networking sessions to foster belonging and visibility for Asian employees and allies.</li>
+          <li>Drove outreach initiatives to increase participation and awareness, partnering with leadership and other employee resource groups for joint programming.</li>
+          <li>Acted as a bridge between diverse teams, promoting cultural exchange and strengthening employee engagement across the site.</li>
+        </ul>
+        <div class="exp-tags" style="margin-top:16px;">
+          <span>DEI Leadership</span><span>Event Planning</span><span>Community Building</span><span>Outreach</span>
+        </div>
+      </div>
+
+      <div class="exp-card reveal" style="border-left:3px solid var(--cyan);">
+        <div class="exp-role-wrap" style="margin-bottom:12px;">
+          <span class="exp-led" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan);"></span>
+          <span class="exp-role">Student Consultant &amp; Mentor</span>
+        </div>
+        <div class="exp-company" style="margin-left:22px;">Independent — Academic &amp; Career Guidance</div>
+        <ul class="exp-bullets" style="margin-top:14px;">
+          <li>Provided one-on-one consulting and mentorship to students pursuing careers in IT infrastructure, data center operations, and cloud engineering.</li>
+          <li>Guided students through resume building, interview preparation, certification roadmaps (Azure, AWS, CompTIA), and career planning strategies.</li>
+          <li>Helped students navigate graduate school applications, OPT/CPT processes, and the transition from academic studies to full-time industry roles in the U.S.</li>
+          <li>Mentored multiple students who successfully landed roles in data center operations, systems engineering, and cloud support across major tech companies.</li>
+        </ul>
+        <div class="exp-tags" style="margin-top:16px;">
+          <span>Mentoring</span><span>Career Coaching</span><span>Resume Building</span><span>Interview Prep</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERESTS & ASPIRATIONS -->
+<section id="interests" style="background:var(--bg-raised);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> What Drives Me</div>
+      <h2 class="section-title">Interests &amp; Aspirations</h2>
+      <p class="section-desc">Beyond operations — actively exploring the intersection of infrastructure, AI, and entrepreneurship.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+      <div class="leader-card reveal" style="border-top:2px solid var(--purple);">
+        <div style="font-size:1.6rem;margin-bottom:12px;">🚀</div>
+        <div class="leader-title">Startup Builder</div>
+        <div class="leader-desc">Passionate about building startups from the ground up. Experienced in early-stage operations through Legal Fiber, and actively exploring new ventures at the intersection of infrastructure and technology. Interested in securing investment and scaling ideas into viable businesses.</div>
+      </div>
+      <div class="leader-card reveal" style="border-top:2px solid var(--blue);">
+        <div style="font-size:1.6rem;margin-bottom:12px;">🧠</div>
+        <div class="leader-title">AI Enthusiast</div>
+        <div class="leader-desc">Dedicated daily learner of artificial intelligence — from LLMs and automation to AI-driven infrastructure management. Exploring how AI can transform data center operations, predictive maintenance, and capacity planning at scale.</div>
+      </div>
+      <div class="leader-card reveal" style="border-top:2px solid var(--green);">
+        <div style="font-size:1.6rem;margin-bottom:12px;">🎤</div>
+        <div class="leader-title">IT Serve Conference Attendee</div>
+        <div class="leader-desc">Active participant in IT Serve Alliance conferences — networking with industry leaders, staying current on IT staffing trends, workforce innovation, and technology consulting best practices across the U.S. tech ecosystem.</div>
+      </div>
+      <div class="leader-card reveal" style="border-top:2px solid var(--orange);">
+        <div style="font-size:1.6rem;margin-bottom:12px;">💡</div>
+        <div class="leader-title">Investment &amp; Growth</div>
+        <div class="leader-desc">Actively learning about venture capital, angel investing, and startup funding ecosystems. Interested in both securing investment for new ventures and understanding how capital drives technology innovation and infrastructure growth.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THOUGHT LEADERSHIP -->
+<section id="blog">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="label-line"></span> Thought Leadership</div>
+      <h2 class="section-title">Topics I Write &amp; Think About</h2>
+      <p class="section-desc">Sharing insights on data center operations, AI in infrastructure, and the startup ecosystem.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+      <div class="leader-card reveal" style="border-left:3px solid var(--green);">
+        <div style="font-size:0.68rem;font-family:'JetBrains Mono',monospace;color:var(--green);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;">Data Center Ops</div>
+        <div class="leader-title">The Future of Hyperscale Operations</div>
+        <div class="leader-desc">How automation, AI-driven monitoring, and predictive maintenance are transforming 24/7 data center operations — from reactive firefighting to proactive infrastructure intelligence.</div>
+      </div>
+      <div class="leader-card reveal" style="border-left:3px solid var(--blue);">
+        <div style="font-size:0.68rem;font-family:'JetBrains Mono',monospace;color:var(--blue);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;">AI & Infrastructure</div>
+        <div class="leader-title">AI in the Server Room</div>
+        <div class="leader-desc">Exploring how large language models, computer vision, and machine learning are being applied to capacity planning, incident prediction, and automated root-cause analysis in data centers.</div>
+      </div>
+      <div class="leader-card reveal" style="border-left:3px solid var(--purple);">
+        <div style="font-size:0.68rem;font-family:'JetBrains Mono',monospace;color:var(--purple);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;">Startup & Growth</div>
+        <div class="leader-title">From Operator to Founder</div>
+        <div class="leader-desc">Lessons learned from running startup operations at Legal Fiber — building SOPs from scratch, scaling with limited resources, and the entrepreneurial mindset that operations managers bring to the table.</div>
+      </div>
+      <div class="leader-card reveal" style="border-left:3px solid var(--orange);">
+        <div style="font-size:0.68rem;font-family:'JetBrains Mono',monospace;color:var(--orange);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;">Leadership</div>
+        <div class="leader-title">Building Teams That Don't Need You</div>
+        <div class="leader-desc">Why the best managers build autonomous teams — thoughts on structured OJT programs, mentoring technicians toward promotion, and creating a culture of ownership in high-pressure environments.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-card reveal">
+      <h2>Let's Connect</h2>
+      <p>Open to discussing Data Center Manager, Infrastructure Manager, and Operations Manager roles. Willing to relocate.</p>
+      <div style="display:flex;justify-content:center;gap:14px;margin-bottom:24px;flex-wrap:wrap;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 20px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:1.1rem;">🇺🇸</span>
+          <div style="text-align:left;">
+            <div style="font-size:0.82rem;font-weight:600;">English</div>
+            <div style="font-size:0.68rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">Fluent</div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 20px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:1.1rem;">🇮🇳</span>
+          <div style="text-align:left;">
+            <div style="font-size:0.82rem;font-weight:600;">Telugu</div>
+            <div style="font-size:0.68rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">Native</div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 20px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:1.1rem;">🇮🇳</span>
+          <div style="text-align:left;">
+            <div style="font-size:0.82rem;font-weight:600;">Hindi</div>
+            <div style="font-size:0.68rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">Conversational</div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-info">
+        <div class="contact-info-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          (216) 688-5326
+        </div>
+        <div class="contact-info-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          deepakjobs1902@gmail.com
+        </div>
+        <div class="contact-info-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          New Carlisle, IN
+        </div>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:deepakjobs1902@gmail.com" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email Me
+        </a>
+        <a href="https://www.linkedin.com/in/deepak-kumar-kalakota-7b0957292/" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Deepak Kumar Kalakota — Built with uptime in mind.</p>
+</footer>
+
+<script>
+  // Nav scroll
+  window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20));
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
